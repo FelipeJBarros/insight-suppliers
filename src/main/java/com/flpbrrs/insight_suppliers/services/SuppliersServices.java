@@ -48,6 +48,7 @@ public class SuppliersServices {
     public SupplierDTO update(UUID supplierId, SupplierDTO dto) {
         boolean supplierExists = suppliersRepository.findById(supplierId).isPresent();
         if(!supplierExists) throw new RuntimeException("Supplier don't exists");
+        dto.setId(supplierId);
         Supplier supplier = suppliersRepository.save(modelMapper.map(dto, Supplier.class));
         return modelMapper.map(supplier, SupplierDTO.class);
     }
