@@ -2,6 +2,8 @@ package com.flpbrrs.insight_suppliers.controllers;
 
 import com.flpbrrs.insight_suppliers.dto.SupplierDTO;
 import com.flpbrrs.insight_suppliers.services.SuppliersServices;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,26 +27,29 @@ public class SuppliersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SupplierDTO> findById(@PathVariable("id") UUID supplierId) {
+    public ResponseEntity<SupplierDTO> findById(@PathVariable("id") @NotNull UUID supplierId) {
         SupplierDTO supplier = suppliersServices.findById(supplierId);
         return ResponseEntity.ok(supplier);
     }
 
     @PostMapping
-    public ResponseEntity<SupplierDTO> hire(@RequestBody SupplierDTO dto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<SupplierDTO> hire(@Valid @RequestBody SupplierDTO dto, UriComponentsBuilder uriBuilder) {
         SupplierDTO supplier = suppliersServices.create(dto);
         URI uri = uriBuilder.path("/suppliers/{id}").buildAndExpand(supplier.getId()).toUri();
         return ResponseEntity.created(uri).body(supplier);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SupplierDTO> update(@PathVariable("id") UUID supplierId, @RequestBody SupplierDTO dto) {
+    public ResponseEntity<SupplierDTO> update(
+            @PathVariable("id") @NotNull UUID supplierId,
+            @Valid @RequestBody SupplierDTO dto
+    ) {
         SupplierDTO supplier = suppliersServices.update(supplierId, dto);
         return ResponseEntity.ok(supplier);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") UUID supplierId) {
+    public ResponseEntity<Void> delete(@PathVariable("id") @NotNull UUID supplierId) {
         suppliersServices.delete(supplierId);
         return ResponseEntity.noContent().build();
     }
