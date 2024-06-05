@@ -1,6 +1,7 @@
 package com.flpbrrs.insight_suppliers.services;
 
-import com.flpbrrs.insight_suppliers.dto.SupplierDTO;
+import com.flpbrrs.insight_suppliers.dtos.PageDTO;
+import com.flpbrrs.insight_suppliers.dtos.SupplierDTO;
 import com.flpbrrs.insight_suppliers.models.Supplier;
 import com.flpbrrs.insight_suppliers.repositories.SuppliersRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,12 @@ public class SuppliersServices {
     private final SuppliersRepository suppliersRepository;
     private final ModelMapper modelMapper;
 
-    public Page<SupplierDTO> listAll(Pageable pagination) {
-        return suppliersRepository
+    public PageDTO<SupplierDTO> listAll(Pageable pagination) {
+        Page<SupplierDTO> suppliers = suppliersRepository
                 .findAll(pagination)
                 .map(supplier -> modelMapper.map(supplier, SupplierDTO.class));
+
+        return PageDTO.from(suppliers);
     }
 
     public List<SupplierDTO> listAll() {

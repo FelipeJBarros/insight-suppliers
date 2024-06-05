@@ -1,11 +1,11 @@
 package com.flpbrrs.insight_suppliers.controllers;
 
-import com.flpbrrs.insight_suppliers.dto.SupplierDTO;
+import com.flpbrrs.insight_suppliers.dtos.PageDTO;
+import com.flpbrrs.insight_suppliers.dtos.SupplierDTO;
 import com.flpbrrs.insight_suppliers.services.SuppliersServices;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class SuppliersController {
     private final SuppliersServices suppliersServices;
 
     @GetMapping
-    public Page<SupplierDTO> listAll(@PageableDefault(size = 10) Pageable pagination) {
+    public PageDTO<SupplierDTO> listAll(@PageableDefault(size = 10, page = 0) Pageable pagination) {
         return suppliersServices.listAll(pagination);
     }
 
