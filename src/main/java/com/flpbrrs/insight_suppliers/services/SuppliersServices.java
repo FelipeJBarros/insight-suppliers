@@ -2,12 +2,15 @@ package com.flpbrrs.insight_suppliers.services;
 
 import com.flpbrrs.insight_suppliers.dtos.PageDTO;
 import com.flpbrrs.insight_suppliers.dtos.SupplierDTO;
+import com.flpbrrs.insight_suppliers.dtos.SupplierOption;
 import com.flpbrrs.insight_suppliers.models.Supplier;
+import com.flpbrrs.insight_suppliers.models.specifications.SupplierSpec;
 import com.flpbrrs.insight_suppliers.repositories.SuppliersRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +22,12 @@ public class SuppliersServices {
     private final SuppliersRepository suppliersRepository;
     private final ModelMapper modelMapper;
 
-    public PageDTO<SupplierDTO> listAll(Pageable pagination) {
+    public PageDTO<SupplierDTO> listAll(SupplierOption options, Pageable pagination) {
+        Specification<Supplier> specification = SupplierSpec.withName(options.getName())
+                .and(SupplierSpec.withDocNumber(options.getDocNumber()));
+
         Page<SupplierDTO> suppliers = suppliersRepository
-                .findAll(pagination)
+                .findAll(specification, pagination)
                 .map(supplier -> modelMapper.map(supplier, SupplierDTO.class));
 
         return PageDTO.from(suppliers);

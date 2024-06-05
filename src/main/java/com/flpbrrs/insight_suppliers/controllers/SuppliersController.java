@@ -2,6 +2,7 @@ package com.flpbrrs.insight_suppliers.controllers;
 
 import com.flpbrrs.insight_suppliers.dtos.PageDTO;
 import com.flpbrrs.insight_suppliers.dtos.SupplierDTO;
+import com.flpbrrs.insight_suppliers.dtos.SupplierOption;
 import com.flpbrrs.insight_suppliers.services.SuppliersServices;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -22,8 +23,13 @@ public class SuppliersController {
     private final SuppliersServices suppliersServices;
 
     @GetMapping
-    public PageDTO<SupplierDTO> listAll(@PageableDefault(size = 10, page = 0) Pageable pagination) {
-        return suppliersServices.listAll(pagination);
+    public PageDTO<SupplierDTO> listAll(
+            @RequestParam(required = false, value = "") String name,
+            @RequestParam(required = false, value = "") String docNumber,
+            @PageableDefault(size = 10, page = 0) Pageable pagination
+    ) {
+        SupplierOption options = new SupplierOption(name, docNumber);
+        return suppliersServices.listAll(options, pagination);
     }
 
     @GetMapping("/{id}")
