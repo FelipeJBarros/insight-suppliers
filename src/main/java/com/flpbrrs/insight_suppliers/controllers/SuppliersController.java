@@ -4,6 +4,7 @@ import com.flpbrrs.insight_suppliers.dtos.PageDTO;
 import com.flpbrrs.insight_suppliers.dtos.SupplierDTO;
 import com.flpbrrs.insight_suppliers.dtos.SupplierOption;
 import com.flpbrrs.insight_suppliers.services.SuppliersServices;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("suppliers")
 @RequiredArgsConstructor
+@Tag(name = "Insight Suppliers API")
 public class SuppliersController {
     private final SuppliersServices suppliersServices;
 
